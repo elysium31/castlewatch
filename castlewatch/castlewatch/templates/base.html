@@ -23,6 +23,7 @@
 
         {# Global stylesheets #}
         <link rel="stylesheet" type="text/css" href="{% static 'css/castlewatch.css' %}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
 
         {% block extra_css %}
             {# Override this in templates to add extra stylesheets #}
@@ -36,6 +37,7 @@
 
         {# Global javascript #}
         <script type="text/javascript" src="{% static 'js/castlewatch.js' %}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
 
         {% block extra_js %}
             {# Override this in templates to add extra javascript #}
