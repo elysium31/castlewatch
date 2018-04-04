@@ -1,18 +1,22 @@
-{% extends "base.html" %}
+{% extends "blog_base.html" %}
 
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags wagtailimages_tags %}
 
 {% block body_class %}template-blogindexpage{% endblock %}
 
-{% block content %}
-    <h1>{{ page.title }}</h1>
-
-    <div class="intro">{{ page.intro|richtext }}</div>
-
+{% block blog_content %}
     {% for post in page.get_children %}
-        <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>
-        {{ post.specific.intro }}
-        {{ post.specific.body|richtext }}
+        <div class="section">
+            <div class="row">
+                <div class="col s4">
+                    {% image post.specific.feed_image fill-210x127 class="responsive-img" %}
+                </div>
+                <div class="col s8">
+                    <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>
+                    {{ post.specific.intro }}
+                </div>
+            </div>
+        </div>
+        <div class="divider"></div>
     {% endfor %}
-
 {% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags %}
+
+{% block body_class %}template-blogindexpage{% endblock %}
+
+{% block content %}
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo">CastleWatch</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="sass.html">Home</a></li>
+                <li><a href="collapsible.html">About</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        {% block blog_content %}{% endblock %}
+    </div>>
+
+{% endblock %}
