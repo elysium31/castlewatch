@@ -25,7 +25,13 @@ class BlogPage(Page):
     )
 
     body = StreamField([
-        ('heading', blocks.CharBlock(classname="full title")),
+        (
+            'heading',
+            blocks.CharBlock(
+                classname="full title",
+                template='blog/heading.html',
+            )
+        ),
         ('paragraph', blocks.RichTextBlock()),
         ('image', ImageChooserBlock()),
     ])
@@ -38,6 +44,5 @@ class BlogPage(Page):
 
     promote_panels = [
         MultiFieldPanel(Page.promote_panels, "Common page configuration"),
-        FieldPanel('date'),
         ImageChooserPanel('feed_image'),
     ]
