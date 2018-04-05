@@ -5,8 +5,8 @@
 {% block body_class %}template-blogindexpage{% endblock %}
 
 {% block content %}
-    <header>
-        <nav>
+    <nav>
+        <div class="container">
             <div class="nav-wrapper">
                 <a href="#" class="brand-logo">CastleWatch</a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -14,13 +14,21 @@
                     <li><a href="collapsible.html">About</a></li>
                 </ul>
             </div>
-        </nav>
+        </div>
+    </nav>
+
+    <header>
+        <div class="container">
+            {% block header %}{% endblock %}
+        </div>
     </header>
+
     <main>
         <div class="container">
             {% block blog_content %}{% endblock %}
         </div>
     </main>
+
     <footer class="page-footer">
       <div class="container">
         <div class="row">
