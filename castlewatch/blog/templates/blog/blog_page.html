@@ -22,8 +22,16 @@
             {% for block in page.body %}
                     {% include_block block %}
             {% endfor %}
-
-            <p><a href="{{ page.get_parent.url }}">Return to blog</a></p>
         </div>
     </div>
+    {% if page.tags.all.count %}
+        <div class="row">
+            <div class="col l8 m10">
+                <h3>Tags</h3>
+                {% for tag in page.tags.all %}
+                    <a href="{% slugurl 'blog' %}?tag={{ tag }}" class="waves-effect waves-teal btn-flat">{{ tag }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

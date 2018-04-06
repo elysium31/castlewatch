@@ -1,4 +1,9 @@
 from django.db import models
+from django.conf import settings
+
+from modelcluster.fields import ParentalKey
+from modelcluster.contrib.taggit import ClusterTaggableManager
+from taggit.models import TaggedItemBase
 
 from wagtail.core.models import Page
 from wagtail.core.fields import StreamField, RichTextField
@@ -9,11 +14,32 @@ from wagtail.images.blocks import ImageChooserBlock
 
 
 class BlogIndexPage(Page):
-    pass
+    def get_context(self, request):
+        context = super().get_context(request)
+        blogpages = self.get_children().live().order_by('-first_published_at')
+        tag = request.GET.get('tag')
+        if tag is not None:
+            blogpages = blogpages.filter(blogpage__tags__name=tag)
+        context['blogpages'] = blogpages
+        return context
+
+
+class BlogPageTag(TaggedItemBase):
+    content_object = ParentalKey(
+        'BlogPage',
+        related_name='tagged_items',
+        on_delete=models.CASCADE
+    )
 
 
 class BlogPage(Page):
-    author = models.CharField(max_length=255)
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        blank=True, null=True,
+        verbose_name='Author',
+        on_delete=models.SET_NULL,
+        related_name='author_pages',
+    )
     date = models.DateField("Post date")
     intro = models.CharField(max_length=511, null=True, blank=True)
     feed_image = models.ForeignKey(
@@ -23,6 +49,8 @@ class BlogPage(Page):
         on_delete=models.SET_NULL,
         related_name='+'
     )
+
+    tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
 
     body = StreamField([
         (
@@ -37,8 +65,14 @@ class BlogPage(Page):
     ])
 
     content_panels = Page.content_panels + [
-        FieldPanel('author'),
-        FieldPanel('date'),
+        MultiFieldPanel(
+            [
+                FieldPanel('author'),
+                FieldPanel('date'),
+                FieldPanel('tags'),
+            ],
+            heading="Blog information"
+        ),
         StreamFieldPanel('body'),
     ]
 
@@ -54,3 +88,4 @@ class BlogAboutPage(Page):
     content_panels = Page.content_panels + [
         FieldPanel('body', classname="full"),
     ]
+
